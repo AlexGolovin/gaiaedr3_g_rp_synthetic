@@ -19,3 +19,6 @@ These corrections are to be applied at the discretion of the user, when deriving
 if your paper uses results obtained with this code, please cite Golovin et al. 2021, A&A, [...] ([URL pending]()).
 
 If you have any questions and/or comments, please contact me at `agolovin (@) lsw (dot) uni-heidelberg (dot) de`.
+
+A short appetizer with a few illustrative examples:
+![](20mas_blended_HRD_o_c_colourcoded.png)
