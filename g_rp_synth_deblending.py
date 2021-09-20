@@ -216,7 +216,8 @@ def g_rp_synth(bp_rp):
     Calculates synthetic (or "deblended") G-RP for datasets from Gaia eDR3 using BP-RP photometry as input observable. The details of this method are described in Golovin et al. 2021, A&A, [...].
     
     Input:
-    BP-RP value (or an array of values). Note! BP-RP array needs to be in strictly increasing order.
+    BP-RP value (or an array of values). 
+    Note! BP-RP array needs to be in strictly increasing order.
     
     Applicability range: 
     0.0 < BP-RP < 4.25
