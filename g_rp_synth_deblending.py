@@ -212,14 +212,17 @@ _tck = (([0.04323864, 0.04323864, 0.04323864, 0.04323864, 0.14323864,
 
 
 def g_rp_synth(bp_rp):
-    """Synthetic G-RP photometry (*Gaia* eDR3)
+    """
+    Calculates synthetic (or "deblended") G-RP for datasets from Gaia eDR3 using BP-RP photometry as input observable. The details of this method are described in Golovin et al. 2021, A&A, [...].
+    
+    Input:
+    BP-RP value (or an array of values). Note! BP-RP array needs to be in strictly increasing order.
+    
+    Applicability range: 
+    0.0 < BP-RP < 4.25
 
-    **The details of this method are described in Golovin et al. (2021) [URL pending]**
-    #Acknowledgement: 
-    #if your paper uses results obtained with this code, please cite Golovin et al. 2021, A&A, [...] ([URL pending]()).
-    #If you have any questions and/or comments, please contact me at `agolovin (@) lsw (dot) uni-heidelberg (dot) de`.
-
-
+    Acknowledgement: 
+    if your paper uses results obtained with this code, please cite Golovin et al. 2021, A&A, [...] [URL pending].
     """
     synth_val = interpolate.splev(bp_rp, _tck, der=0, ext=0)
     return synth_val
