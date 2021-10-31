@@ -1,4 +1,9 @@
-#test branch
+# Comments and New addition
+# Test branch by Akash
+# Date: 31.10.21
+# Restrict bp-rp between 0 and 4.25, i.e. in applicability range in the function itself
+# Flag to test if the Bp-Rp color is NOT sorted
+# Create new example to show the use of bp_ & rp_ flux_over_error values of greater than 20 for optimum results
 
 import numpy as np
 from astropy.table import Table
@@ -223,11 +228,26 @@ def g_rp_synth(bp_rp):
     
     Applicability range: 
     0.0 < BP-RP < 4.25
+    Note! It is recommended to use the values which have bp_mean_flux_over_error > 20 and rp_mean_flux_over_error > 20 for optimum results.
 
     Acknowledgement: 
     if your paper uses results obtained with this code, please cite Golovin et al. 2021, A&A, [...] [URL pending].
     """
-    synth_val = interpolate.splev(bp_rp, _tck, der=0, ext=0)
+    
+    # Flag to check if BP-RP is not in increasing order
+    if (any(((bp_rp[i] > bp_rp[i + 1]) & ~np.isnan(bp_rp[i]) & ~np.isnan(bp_rp[i+1])) for i in range(len(bp_rp)-1))):
+        print('Warning: The input argument - BP-RP color - is not sorted, the program may not give accuarate results')
+    
+    # Create a new BP-RP list for the applicability range 0<BP-RP<4.25
+    bp_rp_in_range = np.empty(len(bp_rp))
+    bp_rp_in_range[:] = np.nan
+    
+    for index, color in enumerate(bp_rp):
+        if ((color > 0.0) & (color<4.25)):
+            bp_rp_in_range[index] = color
+            
+    synth_val = interpolate.splev(bp_rp_in_range, _tck, der=0, ext=0)
+    
     return synth_val
 
 
@@ -236,8 +256,8 @@ def g_rp_synth(bp_rp):
 input_table = Table.read("/content/path/input_file.fits", format='fits')
 input_table.sort('bp_rp')
 
-# Considering only entries within the applicability range:
-mask = (input_table['bp_rp']> 0.0) & (input_table['bp_rp']<4.25)
+# Strictly considering entries which have phot_bp_mean_flux_over_error > 20 and phot_rp_mean_flux_over_error > 20:
+mask = (input_table['phot_bp_mean_flux_over_error']> 20) & (input_table['phot_bp_mean_flux_over_error'] > 20)
 bp_rp = np.array(input_table['bp_rp'][mask])
 
 # Calling the function:
