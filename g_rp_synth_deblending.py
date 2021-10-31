@@ -9,6 +9,7 @@
 import numpy as np
 from astropy.table import Table
 from scipy import interpolate
+import warnings
 
 # Model parameters:
 # (Stores knots, coefficients, and the degree of the spline)
@@ -237,7 +238,8 @@ def g_rp_synth(bp_rp):
     
     # Flag to check if BP-RP is not in increasing order
     if (any(((bp_rp[i] > bp_rp[i + 1]) & ~np.isnan(bp_rp[i]) & ~np.isnan(bp_rp[i+1])) for i in range(len(bp_rp)-1))):
-        print('Warning: The input argument - BP-RP color - is not sorted, the program may not give accuarate results')
+        warnings.warn('The input argument - BP-RP color - is not sorted, the program may not give accuarate results.',Warning)
+    
     
     # Create a new BP-RP list for the applicability range 0<BP-RP<4.25
     bp_rp_in_range = np.empty(len(bp_rp))
