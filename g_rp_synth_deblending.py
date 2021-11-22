@@ -1,11 +1,3 @@
-# Comments and New addition
-# Test branch by Akash
-# Date: 31.10.21
-# Restrict BP-RP between 0 and 4.25, i.e. in applicability range, in the function itself
-# Flag to test if the BP-RP color is NOT sorted
-# Create new example to show the use of bp_ & rp_ mean_flux_over_error values of greater than 20 for optimum results
-# A new array bp_rp_in_range is created to preserve the structure of input argument, the values which are out of the applicability range are assigned NaN values
-
 import numpy as np
 from astropy.table import Table
 from scipy import interpolate
