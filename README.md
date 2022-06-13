@@ -23,6 +23,6 @@ If you have any questions and/or comments, please contact me at `agolovin (@) ls
 
 Before | After
 ------------ | -------------
-![](/plots/20mas_HRD_obs.png) | ![](/plots/20mas_HRD_synth.png)
+![](/plots/20mas_blended_HRD_o_c_colourcoded_s.png) | ![](/plots/20mas_deblended_HRD_o_c_colourcoded_s.png)
 
 
