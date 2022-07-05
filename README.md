@@ -19,7 +19,7 @@ if your paper uses results obtained with this code, please cite [Golovin et al. 
 
 If you have any questions and/or comments, please contact me at `agolovin (@) lsw (dot) uni-heidelberg (dot) de`.
 
-### A short appetizer with a few illustrative examples:
+### A short appetizer / illustrative example:
 
 Before | After
 ------------ | -------------
