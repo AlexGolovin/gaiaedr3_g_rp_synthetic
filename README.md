@@ -1,6 +1,6 @@
 # gaiaedr3_g_rp_synthetic
 This function calculates synthetic (or "deblended") G-RP for datasets from *Gaia* eDR3 using BP-RP photometry as input observable.
-The details of this method are described in [Golovin et al. 2022, A&A, accepted](https://arxiv.org/abs/2211.01449).
+The details of this method are described in [Golovin et al. 2023, A&A, 670, A19](https://www.aanda.org/articles/aa/full_html/2023/02/aa44250-22/aa44250-22.html).
 
 ### Input
 BP-RP value (or an array of values). Note! BP-RP array needs to be in strictly increasing order.
@@ -15,7 +15,7 @@ These corrections are to be applied at the discretion of the user, when deriving
 
 ### Acknowledgement:
 
-if your paper uses results obtained with this code, please cite [Golovin et al. 2022, A&A, accepted](https://arxiv.org/abs/2211.01449).
+if your paper uses results obtained with this code, please cite [Golovin et al. 2023, A&A, 670, A19](https://www.aanda.org/articles/aa/full_html/2023/02/aa44250-22/aa44250-22.html).
 
 If you have any questions and/or comments, please contact me at `agolovin (@) lsw (dot) uni-heidelberg (dot) de`.
 
