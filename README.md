@@ -7,7 +7,7 @@ The details of this method are described in [Golovin et al. 2023, A&A, 670, A19]
 You can install `gaiaedr3_g_rp_synthetic` directly from GitHub using `pip`. It is recommended to install this within a Python virtual environment.
 
 ```bash
-pip install git+[https://github.com/AlexGolovin/gaiaedr3_g_rp_synthetic](https://github.com/AlexGolovin/gaiaedr3_g_rp_synthetic)
+pip install git+https://github.com/AlexGolovin/gaiaedr3_g_rp_synthetic
 ```
 
 ### Input
