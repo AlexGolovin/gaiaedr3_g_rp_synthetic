@@ -251,24 +251,3 @@ def g_rp_synth(bp_rp):
     
     # 5. Return a scalar if a scalar was passed in, otherwise return the array
     return synth_val[0] if np.isscalar(bp_rp) else synth_val
-
-
-# ==========================================
-# Example of usage
-# ==========================================
-if __name__ == "__main__":
-    # Load data
-    input_table = Table.read("/content/path/input_file.fits", format='fits')
-    
-    # Strictly considering entries with high S/N in both BP and RP:
-    mask = (input_table['phot_bp_mean_flux_over_error'] > 20) & \
-           (input_table['phot_rp_mean_flux_over_error'] > 20)
-    
-    valid_sources = input_table[mask]
-    bp_rp_colors = np.array(valid_sources['bp_rp'])
-
-    # Calling the function:
-    synthetic_g_rp = g_rp_synth(bp_rp_colors)
-    
-    # Attach it back to the table now since row order was preserved
-    valid_sources['synthetic_g_rp'] = synthetic_g_rp
