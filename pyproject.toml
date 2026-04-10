@@ -3,32 +3,40 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "gaiaedr3_g_rp_synthetic"
+name = "gaiaedr3-g-rp-synthetic"
 version = "1.2.0"
 authors = [
-  { name="Alex Golovin", email="agolovin@lsw.uni-heidelberg.de"}
-
+    { name = "Alex Golovin", email = "agolovin@lsw.uni-heidelberg.de" }
 ]
-description = "Calculates synthetic (deblended) G-RP for datasets from Gaia DR3 using BP-RP photometry."
+description = "Synthetic (deblended) Gaia EDR3/DR3 G-RP colour from BP-RP photometry (Golovin et al. 2023, A&A 670, A19)."
 readme = "README.md"
-requires-python = ">=3.7"
+license = { text = "MIT" }
+requires-python = ">=3.8"
+keywords = ["astronomy", "gaia", "photometry", "deblending", "stellar catalogue"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering :: Astronomy",
-]
-# Explicitly listing dependencies guarantees users have what they need
-dependencies = [
-    "numpy>=1.20.0",
-    "scipy>=1.7.0",
-    "astropy>=5.0",
+    "Intended Audience :: Science/Research",
+    "Development Status :: 5 - Production/Stable",
 ]
 
+# Core runtime: only what g_rp_synth() actually needs
+dependencies = [
+    "numpy>=1.20",
+    "scipy>=1.7",
+]
+
+# Optional: needed only for the example __main__ block
+[project.optional-dependencies]
+examples = ["astropy>=5.0"]
+dev     = ["astropy>=5.0", "pytest>=7.0"]
+
 [project.urls]
-"Homepage" = "https://github.com/AlexGolovin/gaiaedr3_g_rp_synthetic"
+"Homepage"    = "https://github.com/AlexGolovin/gaiaedr3_g_rp_synthetic"
 "Bug Tracker" = "https://github.com/AlexGolovin/gaiaedr3_g_rp_synthetic/issues"
 
 [tool.setuptools]
-# Tells setuptools to install the single .py file as a module
-py-modules = ["gaiaedr3_g_rp_synthetic"]
+# The public importable name must match the actual filename (minus .py)
+py-modules = ["g_rp_synth_deblending"]
