@@ -3,9 +3,10 @@ from astropy.table import Table
 from scipy import interpolate
 import warnings
 
+# ==========================================
 # Model parameters:
 # (Stores knots, coefficients, and the degree of the spline)
-
+# ==========================================
 _tck = (([0.04323864, 0.04323864, 0.04323864, 0.04323864, 0.14323864,
        0.15045376, 0.15766887, 0.16488399, 0.17209911, 0.17931422,
        0.18652934, 0.19374446, 0.20095957, 0.20817469, 0.2153898 ,
@@ -214,46 +215,60 @@ _tck = (([0.04323864, 0.04323864, 0.04323864, 0.04323864, 0.14323864,
 
 def g_rp_synth(bp_rp):
     """
-    Calculates synthetic (or "deblended") G-RP for datasets from Gaia eDR3 using BP-RP photometry as input observable. The details of this method are described in Golovin et al. 2021, A&A, [...].
+    Calculates synthetic (or "deblended") G-RP for datasets from Gaia DR3 
+    using BP-RP photometry as the input observable. 
     
-    Input:
-    BP-RP value (or an array of values). 
-    Note! BP-RP array needs to be in strictly increasing order.
+    The details of this method are described in Golovin et al. 2023, A&A, 670, A19 [2023A&A...670A..19G].
     
     Applicability range: 
-    0.0 < BP-RP < 4.25
-    Note! It is recommended to use the values which have bp_mean_flux_over_error > 20 and rp_mean_flux_over_error > 20 for optimum results.
+    0.0 mag < BP-RP < 4.25 mag. Values outside this range will return NaN.
+    
+    Note: It is recommended to use sources with phot_bp_mean_flux_over_error > 20 
+    and phot_rp_mean_flux_over_error > 20 for optimum results.
 
     Acknowledgement: 
-    if your paper uses results obtained with this code, please cite Golovin et al. 2021, A&A, [...] [URL pending].
+    If your paper uses results obtained with this code, please cite 
+    Golovin et al. 2023, A&A, 670, A19 [2023A&A...670A..19G].
     """
+
+    # 1. Ensure input is a numpy array:
+    bp_rp_arr = np.atleast_1d(bp_rp).astype(float)
     
-    # Flag to check if BP-RP is not in increasing order
-    if (any(((bp_rp[i] > bp_rp[i + 1]) & ~np.isnan(bp_rp[i]) & ~np.isnan(bp_rp[i+1])) for i in range(len(bp_rp)-1))):
-        warnings.warn('The input argument - BP-RP color - is not sorted, the program may not give accuarate results.',Warning)
+    # 2.Check for out-of-bounds values:
+    out_of_bounds = (bp_rp_arr <= 0.0) | (bp_rp_arr >= 4.25)
+    if np.any(out_of_bounds):
+        warnings.warn(
+            "Some BP-RP values are outside the applicability range (0.0 < BP-RP < 4.25). "
+            "These will be returned as NaN.", 
+            UserWarning
+        )
     
+    # 3. Keep valid values, set invalid to NaN
+    bp_rp_in_range = np.where(~out_of_bounds, bp_rp_arr, np.nan)
     
-    # Create a new BP-RP list for the applicability range 0<BP-RP<4.25
-    bp_rp_in_range = np.empty(len(bp_rp))
-    bp_rp_in_range[:] = np.nan
-    
-    for index, color in enumerate(bp_rp):
-        if ((color > 0.0) & (color<4.25)):
-            bp_rp_in_range[index] = color
-            
+    # 4. Evaluate the spline:
     synth_val = interpolate.splev(bp_rp_in_range, _tck, der=0, ext=0)
     
-    return synth_val
+    # 5. Return a scalar if a scalar was passed in, otherwise return the array
+    return synth_val[0] if np.isscalar(bp_rp) else synth_val
 
 
+# ==========================================
 # Example of usage
-# Note! BP-RP array needs to be in strictly increasing order:
-input_table = Table.read("/content/path/input_file.fits", format='fits')
-input_table.sort('bp_rp')
+# ==========================================
+if __name__ == "__main__":
+    # Load data
+    input_table = Table.read("/content/path/input_file.fits", format='fits')
+    
+    # Strictly considering entries with high S/N in both BP and RP:
+    mask = (input_table['phot_bp_mean_flux_over_error'] > 20) & \
+           (input_table['phot_rp_mean_flux_over_error'] > 20)
+    
+    valid_sources = input_table[mask]
+    bp_rp_colors = np.array(valid_sources['bp_rp'])
 
-# Strictly considering entries which have phot_bp_mean_flux_over_error > 20 and phot_rp_mean_flux_over_error > 20:
-mask = (input_table['phot_bp_mean_flux_over_error']> 20) & (input_table['phot_bp_mean_flux_over_error'] > 20)
-bp_rp = np.array(input_table['bp_rp'][mask])
-
-# Calling the function:
-g_rp_synth(bp_rp)
+    # Calling the function:
+    synthetic_g_rp = g_rp_synth(bp_rp_colors)
+    
+    # Attach it back to the table now since row order was preserved
+    valid_sources['synthetic_g_rp'] = synthetic_g_rp
